@@ -3,290 +3,1549 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Binary Pro - Demo Trading Platform</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>TradeX Broker - Online Trading Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #1a1a2e;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* ============ HEADER ============ */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background: #16213e;
+            border-bottom: 1px solid #0f3460;
+            height: 60px;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-center {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .account-type {
+            display: flex;
+            background: #0f3460;
+            border-radius: 25px;
+            overflow: hidden;
+        }
+
+        .account-type button {
+            padding: 8px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: #aaa;
+            background: transparent;
+        }
+
+        .account-type button.active {
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            color: white;
+            border-radius: 25px;
+        }
+
+        .balance-display {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .balance-box {
+            background: #0f3460;
+            padding: 8px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .balance-box .amount {
+            font-size: 18px;
+            font-weight: 700;
+            color: #00d2ff;
+        }
+
+        .balance-box .currency {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .deposit-btn {
+            padding: 10px 25px;
+            background: linear-gradient(135deg, #00c853, #00e676);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .deposit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 200, 83, 0.4);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-icon {
+            width: 40px;
+            height: 40px;
+            background: #0f3460;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 18px;
+        }
+
+        .header-icon:hover {
+            background: #1a4a8a;
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* ============ MAIN LAYOUT ============ */
+        .main-container {
+            display: flex;
+            height: calc(100vh - 60px);
+        }
+
+        /* ============ LEFT SIDEBAR ============ */
+        .left-sidebar {
+            width: 280px;
+            background: #16213e;
+            border-right: 1px solid #0f3460;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            padding: 15px;
+            border-bottom: 1px solid #0f3460;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 10px 15px;
+            background: #0f3460;
+            border: 1px solid #1a4a8a;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .search-box::placeholder {
+            color: #666;
+        }
+
+        .search-box:focus {
+            border-color: #00d2ff;
+        }
+
+        .asset-categories {
+            display: flex;
+            padding: 10px 15px;
+            gap: 5px;
+            border-bottom: 1px solid #0f3460;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 5px 12px;
+            background: #0f3460;
+            border: none;
+            border-radius: 15px;
+            color: #888;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .category-btn.active {
+            background: #3a7bd5;
+            color: white;
+        }
+
+        .asset-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 5px 0;
+        }
+
+        .asset-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .asset-list::-webkit-scrollbar-thumb {
+            background: #0f3460;
+            border-radius: 4px;
+        }
+
+        .asset-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .asset-item:hover {
+            background: rgba(0, 210, 255, 0.05);
+        }
+
+        .asset-item.active {
+            background: rgba(0, 210, 255, 0.1);
+            border-left-color: #00d2ff;
+        }
+
+        .asset-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .asset-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .asset-icon.crypto { background: linear-gradient(135deg, #f7931a, #ffab40); }
+        .asset-icon.forex { background: linear-gradient(135deg, #3a7bd5, #00d2ff); }
+        .asset-icon.stock { background: linear-gradient(135deg, #e91e63, #ff5722); }
+        .asset-icon.commodity { background: linear-gradient(135deg, #ffd700, #ff8f00); color: #333; }
+
+        .asset-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .asset-fullname {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .asset-price-info {
+            text-align: right;
+        }
+
+        .asset-price {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .asset-change {
+            font-size: 11px;
+        }
+
+        .asset-change.up { color: #00e676; }
+        .asset-change.down { color: #ff1744; }
+
+        .asset-payout {
+            font-size: 10px;
+            color: #00d2ff;
+            background: rgba(0, 210, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-top: 3px;
+            display: inline-block;
+        }
+
+        /* ============ CHART AREA ============ */
+        .chart-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .chart-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 15px;
+            background: #16213e;
+            border-bottom: 1px solid #0f3460;
+        }
+
+        .chart-toolbar-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .selected-asset {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .selected-asset-name {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .selected-asset-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #00e676;
+        }
+
+        .timeframe-selector {
+            display: flex;
+            gap: 3px;
+        }
+
+        .timeframe-btn {
+            padding: 5px 10px;
+            background: transparent;
+            border: 1px solid #0f3460;
+            border-radius: 5px;
+            color: #888;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .timeframe-btn.active {
+            background: #3a7bd5;
+            color: white;
+            border-color: #3a7bd5;
+        }
+
+        .chart-type-selector {
+            display: flex;
+            gap: 5px;
+        }
+
+        .chart-type-btn {
+            padding: 5px 10px;
+            background: transparent;
+            border: 1px solid #0f3460;
+            border-radius: 5px;
+            color: #888;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .chart-type-btn.active {
+            background: #0f3460;
+            color: #00d2ff;
+        }
+
+        .chart-canvas-container {
+            flex: 1;
+            position: relative;
+            background: #1a1a2e;
+        }
+
+        #tradingChart {
+            width: 100%;
+            height: 100%;
+        }
+
+        .price-line {
+            position: absolute;
+            right: 0;
+            width: 100%;
+            height: 1px;
+            border-top: 1px dashed rgba(0, 210, 255, 0.3);
+            pointer-events: none;
+        }
+
+        .current-price-tag {
+            position: absolute;
+            right: 0;
+            background: #00d2ff;
+            color: #000;
+            padding: 3px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 3px 0 0 3px;
+            z-index: 10;
+        }
+
+        /* ============ RIGHT PANEL (TRADING) ============ */
+        .right-panel {
+            width: 300px;
+            background: #16213e;
+            border-left: 1px solid #0f3460;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .trade-section-title {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .time-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        .time-btn {
+            padding: 8px;
+            background: #0f3460;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            color: #ccc;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .time-btn.active {
+            border-color: #00d2ff;
+            color: #00d2ff;
+            background: rgba(0, 210, 255, 0.1);
+        }
+
+        .amount-section {
+            margin-bottom: 20px;
+        }
+
+        .amount-input-container {
+            display: flex;
+            align-items: center;
+            background: #0f3460;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #1a4a8a;
+        }
+
+        .amount-btn {
+            width: 45px;
+            height: 50px;
+            background: #1a4a8a;
+            border: none;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .amount-btn:hover {
+            background: #3a7bd5;
+        }
+
+        .amount-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: white;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            outline: none;
+            padding: 10px;
+        }
+
+        .amount-currency {
+            color: #888;
+            padding-right: 10px;
+            font-size: 14px;
+        }
+
+        .quick-amounts {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .quick-amount-btn {
+            padding: 6px;
+            background: #0f3460;
+            border: none;
+            border-radius: 6px;
+            color: #aaa;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quick-amount-btn:hover {
+            background: #1a4a8a;
+            color: white;
+        }
+
+        .payout-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: #0f3460;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .payout-label {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .payout-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #00e676;
+        }
+
+        .profit-info {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 15px;
+            background: rgba(0, 230, 118, 0.1);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .profit-label {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .profit-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #00e676;
+        }
+
+        .trade-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        .trade-btn {
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .trade-btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-up {
+            background: linear-gradient(135deg, #00c853, #00e676);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 200, 83, 0.3);
+        }
+
+        .btn-up:hover {
+            box-shadow: 0 6px 25px rgba(0, 200, 83, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-down {
+            background: linear-gradient(135deg, #d50000, #ff1744);
+            color: white;
+            box-shadow: 0 4px 15px rgba(213, 0, 0, 0.3);
+        }
+
+        .btn-down:hover {
+            box-shadow: 0 6px 25px rgba(213, 0, 0, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .arrow-icon {
+            font-size: 24px;
+        }
+
+        /* ============ BOTTOM BAR ============ */
+        .bottom-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 15px;
+            background: #16213e;
+            border-top: 1px solid #0f3460;
+            font-size: 11px;
+            color: #666;
+        }
+
+        .bottom-bar-left {
+            display: flex;
+            gap: 20px;
+        }
+
+        /* ============ TRADES PANEL ============ */
+        .active-trades {
+            background: #0f3460;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .trades-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .trades-title {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .trades-count {
+            background: #3a7bd5;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+        }
+
+        .trade-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 5px;
+        }
+
+        .trade-item-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .trade-direction {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .trade-direction.up {
+            background: rgba(0, 230, 118, 0.2);
+            color: #00e676;
+        }
+
+        .trade-direction.down {
+            background: rgba(255, 23, 68, 0.2);
+            color: #ff1744;
+        }
+
+        .trade-asset-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .trade-time-left {
+            font-size: 11px;
+            color: #888;
+        }
+
+        .trade-pnl {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .trade-pnl.positive { color: #00e676; }
+        .trade-pnl.negative { color: #ff1744; }
+
+        /* ============ MODAL ============ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: #16213e;
+            border-radius: 20px;
+            padding: 30px;
+            width: 400px;
+            max-width: 90%;
+            border: 1px solid #0f3460;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .modal-input-group {
+            margin-bottom: 15px;
+        }
+
+        .modal-input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 13px;
+            color: #888;
+        }
+
+        .modal-input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: #0f3460;
+            border: 1px solid #1a4a8a;
+            border-radius: 10px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .modal-input-group input:focus {
+            border-color: #00d2ff;
+        }
+
+        .modal-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .modal-btn:hover {
+            transform: scale(1.02);
+        }
+
+        .modal-close {
+            text-align: center;
+            margin-top: 15px;
+            color: #888;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* ============ NOTIFICATION ============ */
+        .notification {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 2000;
+            transform: translateX(400px);
+            transition: transform 0.5s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.win {
+            background: linear-gradient(135deg, #00c853, #00e676);
+            color: white;
+        }
+
+        .notification.lose {
+            background: linear-gradient(135deg, #d50000, #ff1744);
+            color: white;
+        }
+
+        .notification.info {
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            color: white;
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 1200px) {
+            .left-sidebar { width: 220px; }
+            .right-panel { width: 260px; }
+        }
+
+        @media (max-width: 900px) {
+            .left-sidebar { display: none; }
+            .right-panel { width: 240px; }
+        }
+
+        @media (max-width: 600px) {
+            .right-panel { 
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+                padding: 10px;
+                z-index: 50;
+            }
+            .header-center { display: none; }
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <div class="logo">Binary Pro</div>
-            <button class="mobile-menu-toggle" id="mobileMenuToggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="#home" class="nav-link">Home</a></li>
-                <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
-                <li><a href="#demo-trading" class="nav-link">Demo Trading</a></li>
-                <li><a href="#faqs" class="nav-link">FAQs</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1>Binary Pro</h1>
-            <p class="subtitle">Simple demo platform to practice binary trading decisions.</p>
-            <div class="hero-buttons">
-                <a href="#demo-trading" class="btn btn-primary">Start Demo Trading</a>
-                <a href="#how-it-works" class="btn btn-secondary">Learn More</a>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">TX</div>
+            <div class="logo-text">TradeX</div>
+        </div>
+
+        <div class="header-center">
+            <div class="account-type">
+                <button class="active" onclick="switchAccount('demo', this)">📊 Demo</button>
+                <button onclick="switchAccount('real', this)">💰 Real</button>
+            </div>
+            <div class="balance-box">
+                <span class="currency">$</span>
+                <span class="amount" id="balanceDisplay">10,000.00</span>
+            </div>
+            <button class="deposit-btn" onclick="showModal('deposit')">➕ Deposit</button>
+        </div>
+
+        <div class="header-right">
+            <div class="header-icon" onclick="showModal('settings')">⚙️</div>
+            <div class="header-icon">🔔</div>
+            <div class="user-avatar" onclick="showModal('profile')">U</div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="main-container">
+
+        <!-- LEFT SIDEBAR -->
+        <div class="left-sidebar">
+            <div class="sidebar-header">
+                <input type="text" class="search-box" placeholder="🔍 Search assets..." oninput="filterAssets(this.value)">
+            </div>
+            <div class="asset-categories">
+                <button class="category-btn active" onclick="filterCategory('all', this)">All</button>
+                <button class="category-btn" onclick="filterCategory('crypto', this)">Crypto</button>
+                <button class="category-btn" onclick="filterCategory('forex', this)">Forex</button>
+                <button class="category-btn" onclick="filterCategory('stocks', this)">Stocks</button>
+                <button class="category-btn" onclick="filterCategory('commodity', this)">Commodity</button>
+            </div>
+            <div class="asset-list" id="assetList">
+                <!-- Assets will be generated by JS -->
             </div>
         </div>
-        <div class="hero-bg"></div>
-    </section>
 
-    <!-- How It Works Section -->
-    <section id="how-it-works" class="section">
-        <div class="container">
-            <h2 class="section-title">How It Works</h2>
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-icon">📊</div>
-                    <h3>Choose an Asset</h3>
-                    <p>Select from popular currency pairs like EUR/USD, GBP/USD, or BTC/USD.</p>
+        <!-- CHART AREA -->
+        <div class="chart-area">
+            <div class="chart-toolbar">
+                <div class="chart-toolbar-left">
+                    <div class="selected-asset">
+                        <span class="selected-asset-name" id="selectedAssetName">BTC/USD</span>
+                        <span class="selected-asset-price" id="selectedAssetPrice">$43,250.00</span>
+                    </div>
+                    <div class="timeframe-selector">
+                        <button class="timeframe-btn" onclick="setTimeframe('5s', this)">5s</button>
+                        <button class="timeframe-btn" onclick="setTimeframe('15s', this)">15s</button>
+                        <button class="timeframe-btn" onclick="setTimeframe('30s', this)">30s</button>
+                        <button class="timeframe-btn active" onclick="setTimeframe('1m', this)">1m</button>
+                        <button class="timeframe-btn" onclick="setTimeframe('5m', this)">5m</button>
+                        <button class="timeframe-btn" onclick="setTimeframe('15m', this)">15m</button>
+                    </div>
                 </div>
-                <div class="step-card">
-                    <div class="step-icon">📈</div>
-                    <h3>Choose Direction</h3>
-                    <p>Predict whether the price will go UP (Call) or DOWN (Put).</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-icon">⏱️</div>
-                    <h3>Set Amount & Time</h3>
-                    <p>Choose your trade amount and expiration time (30s, 60s, or 5m).</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-icon">💰</div>
-                    <h3>See Results</h3>
-                    <p>Watch the outcome at expiry. Win up to 80% profit or learn from losses.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Demo Trading Section -->
-    <section id="demo-trading" class="section trading-section">
-        <div class="container">
-            <h2 class="section-title">Demo Trading</h2>
-            
-            <!-- Stats Bar -->
-            <div class="stats-bar">
-                <div class="stat-item">
-                    <span class="stat-label">Balance</span>
-                    <span class="stat-value" id="balanceDisplay">$10,000.00</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Open Trades</span>
-                    <span class="stat-value" id="openTradesCount">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Won</span>
-                    <span class="stat-value win" id="wonCount">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Lost</span>
-                    <span class="stat-value loss" id="lostCount">0</span>
+                <div class="chart-type-selector">
+                    <button class="chart-type-btn active" onclick="setChartType('candle', this)">📊</button>
+                    <button class="chart-type-btn" onclick="setChartType('line', this)">📈</button>
+                    <button class="chart-type-btn" onclick="setChartType('area', this)">📉</button>
                 </div>
             </div>
 
-            <!-- Trading Interface -->
-            <div class="trading-interface">
-                <!-- Chart Area -->
-                <div class="chart-area">
-                    <div class="chart-header">
-                        <div class="asset-info">
-                            <h3 id="currentAsset">EUR/USD</h3>
-                            <span class="price" id="currentPrice">1.0845</span>
-                            <span class="price-change" id="priceChange">+0.00%</span>
+            <div class="chart-canvas-container">
+                <canvas id="tradingChart"></canvas>
+                <div class="current-price-tag" id="priceTag" style="top: 50%;">43,250.00</div>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="right-panel">
+            <!-- Active Trades -->
+            <div class="active-trades" id="activeTrades" style="display: none;">
+                <div class="trades-header">
+                    <span class="trades-title">Active Trades</span>
+                    <span class="trades-count" id="tradesCount">0</span>
+                </div>
+                <div id="tradesList"></div>
+            </div>
+
+            <div class="trade-section-title">⏱️ Expiry Time</div>
+            <div class="time-selector">
+                <button class="time-btn" onclick="setExpiry(30, this)">30s</button>
+                <button class="time-btn active" onclick="setExpiry(60, this)">1m</button>
+                <button class="time-btn" onclick="setExpiry(120, this)">2m</button>
+                <button class="time-btn" onclick="setExpiry(300, this)">5m</button>
+                <button class="time-btn" onclick="setExpiry(600, this)">10m</button>
+                <button class="time-btn" onclick="setExpiry(900, this)">15m</button>
+                <button class="time-btn" onclick="setExpiry(1800, this)">30m</button>
+                <button class="time-btn" onclick="setExpiry(3600, this)">1h</button>
+            </div>
+
+            <div class="trade-section-title">💵 Amount</div>
+            <div class="amount-section">
+                <div class="amount-input-container">
+                    <button class="amount-btn" onclick="adjustAmount(-10)">−</button>
+                    <input type="number" class="amount-input" id="tradeAmount" value="100" min="1">
+                    <span class="amount-currency">USD</span>
+                    <button class="amount-btn" onclick="adjustAmount(10)">+</button>
+                </div>
+                <div class="quick-amounts">
+                    <button class="quick-amount-btn" onclick="setAmount(10)">$10</button>
+                    <button class="quick-amount-btn" onclick="setAmount(50)">$50</button>
+                    <button class="quick-amount-btn" onclick="setAmount(100)">$100</button>
+                    <button class="quick-amount-btn" onclick="setAmount(500)">$500</button>
+                </div>
+            </div>
+
+            <div class="payout-info">
+                <span class="payout-label">Payout</span>
+                <span class="payout-value" id="payoutPercent">92%</span>
+            </div>
+
+            <div class="profit-info">
+                <span class="profit-label">Potential Profit</span>
+                <span class="profit-value" id="profitValue">+$92.00</span>
+            </div>
+
+            <div class="trade-buttons">
+                <button class="trade-btn btn-up" onclick="placeTrade('up')">
+                    <span class="arrow-icon">▲</span> UP
+                </button>
+                <button class="trade-btn btn-down" onclick="placeTrade('down')">
+                    <span class="arrow-icon">▼</span> DOWN
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION -->
+    <div class="notification" id="notification">
+        <span id="notifIcon">🎉</span>
+        <span id="notifText">Trade Won! +$92.00</span>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-title" id="modalTitle">Deposit</div>
+            <div id="modalContent">
+                <div class="modal-input-group">
+                    <label>Amount (USD)</label>
+                    <input type="number" id="depositAmount" value="100" min="10">
+                </div>
+                <div class="modal-input-group">
+                    <label>Payment Method</label>
+                    <input type="text" value="Demo Account" disabled>
+                </div>
+                <button class="modal-btn" onclick="processDeposit()">Confirm Deposit</button>
+            </div>
+            <div class="modal-close" onclick="closeModal()">✕ Close</div>
+        </div>
+    </div>
+
+    <script>
+        // ============ DATA ============
+        const assets = [
+            { name: 'BTC/USD', fullname: 'Bitcoin', type: 'crypto', price: 43250.00, change: 2.45, payout: 92 },
+            { name: 'ETH/USD', fullname: 'Ethereum', type: 'crypto', price: 2650.00, change: 3.12, payout: 90 },
+            { name: 'BNB/USD', fullname: 'Binance Coin', type: 'crypto', price: 312.50, change: -1.23, payout: 88 },
+            { name: 'SOL/USD', fullname: 'Solana', type: 'crypto', price: 98.75, change: 5.67, payout: 85 },
+            { name: 'XRP/USD', fullname: 'Ripple', type: 'crypto', price: 0.6234, change: -0.89, payout: 87 },
+            { name: 'ADA/USD', fullname: 'Cardano', type: 'crypto', price: 0.5123, change: 1.34, payout: 86 },
+            { name: 'EUR/USD', fullname: 'Euro/Dollar', type: 'forex', price: 1.0856, change: 0.12, payout: 94 },
+            { name: 'GBP/USD', fullname: 'Pound/Dollar', type: 'forex', price: 1.2634, change: -0.34, payout: 93 },
+            { name: 'USD/JPY', fullname: 'Dollar/Yen', type: 'forex', price: 148.56, change: 0.56, payout: 93 },
+            { name: 'AUD/USD', fullname: 'Aussie/Dollar', type: 'forex', price: 0.6543, change: -0.23, payout: 91 },
+            { name: 'USD/CHF', fullname: 'Dollar/Franc', type: 'forex', price: 0.8765, change: 0.08, payout: 92 },
+            { name: 'AAPL', fullname: 'Apple Inc.', type: 'stocks', price: 185.42, change: 1.23, payout: 89 },
+            { name: 'GOOGL', fullname: 'Alphabet Inc.', type: 'stocks', price: 141.80, change: 0.89, payout: 88 },
+            { name: 'TSLA', fullname: 'Tesla Inc.', type: 'stocks', price: 245.67, change: -2.34, payout: 87 },
+            { name: 'AMZN', fullname: 'Amazon', type: 'stocks', price: 178.25, change: 1.56, payout: 88 },
+            { name: 'XAU/USD', fullname: 'Gold', type: 'commodity', price: 2045.30, change: 0.45, payout: 90 },
+            { name: 'XAG/USD', fullname: 'Silver', type: 'commodity', price: 23.45, change: -0.67, payout: 88 },
+            { name: 'OIL/USD', fullname: 'Crude Oil', type: 'commodity', price: 78.90, change: 1.12, payout: 86 },
+        ];
+
+        let selectedAsset = assets[0];
+        let balance = 10000.00;
+        let tradeAmount = 100;
+        let expiryTime = 60;
+        let activeTrades = [];
+        let chartData = [];
+        let chartType = 'candle';
+        let animationId;
+
+        // ============ INITIALIZE ============
+        function init() {
+            renderAssetList(assets);
+            selectAsset(assets[0]);
+            generateChartData();
+            startChart();
+            startPriceUpdates();
+            updateProfit();
+        }
+
+        // ============ ASSET LIST ============
+        function renderAssetList(assetArray) {
+            const list = document.getElementById('assetList');
+            list.innerHTML = '';
+            assetArray.forEach((asset, index) => {
+                const item = document.createElement('div');
+                item.className = `asset-item ${asset.name === selectedAsset.name ? 'active' : ''}`;
+                item.onclick = () => selectAsset(asset);
+                item.innerHTML = `
+                    <div class="asset-info">
+                        <div class="asset-icon ${asset.type}">${asset.name.substring(0, 2)}</div>
+                        <div>
+                            <div class="asset-name">${asset.name}</div>
+                            <div class="asset-fullname">${asset.fullname}</div>
                         </div>
-                        <div class="timeframe-selector">
-                            <button class="tf-btn active" data-tf="30s">30s</button>
-                            <button class="tf-btn" data-tf="60s">60s</button>
-                            <button class="tf-btn" data-tf="5m">5m</button>
+                    </div>
+                    <div class="asset-price-info">
+                        <div class="asset-price">$${formatPrice(asset.price)}</div>
+                        <div class="asset-change ${asset.change >= 0 ? 'up' : 'down'}">
+                            ${asset.change >= 0 ? '▲' : '▼'} ${Math.abs(asset.change)}%
+                        </div>
+                        <div class="asset-payout">💰 ${asset.payout}%</div>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function selectAsset(asset) {
+            selectedAsset = asset;
+            document.getElementById('selectedAssetName').textContent = asset.name;
+            document.getElementById('selectedAssetPrice').textContent = `$${formatPrice(asset.price)}`;
+            document.getElementById('payoutPercent').textContent = `${asset.payout}%`;
+            generateChartData();
+            renderAssetList(assets);
+            updateProfit();
+        }
+
+        function filterAssets(query) {
+            const filtered = assets.filter(a => 
+                a.name.toLowerCase().includes(query.toLowerCase()) ||
+                a.fullname.toLowerCase().includes(query.toLowerCase())
+            );
+            renderAssetList(filtered);
+        }
+
+        function filterCategory(cat, btn) {
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const filtered = cat === 'all' ? assets : assets.filter(a => a.type === cat);
+            renderAssetList(filtered);
+        }
+
+        // ============ CHART ============
+        function generateChartData() {
+            chartData = [];
+            let price = selectedAsset.price;
+            const volatility = price * 0.002;
+
+            for (let i = 0; i < 100; i++) {
+                const open = price;
+                const close = open + (Math.random() - 0.48) * volatility;
+                const high = Math.max(open, close) + Math.random() * volatility * 0.5;
+                const low = Math.min(open, close) - Math.random() * volatility * 0.5;
+                chartData.push({ open, high, low, close, time: Date.now() - (100 - i) * 1000 });
+                price = close;
+            }
+            selectedAsset.price = price;
+        }
+
+        function startChart() {
+            const canvas = document.getElementById('tradingChart');
+            const ctx = canvas.getContext('2d');
+
+            function draw() {
+                canvas.width = canvas.parentElement.clientWidth;
+                canvas.height = canvas.parentElement.clientHeight;
+
+                const w = canvas.width;
+                const h = canvas.height;
+                const padding = { top: 20, bottom: 30, left: 10, right: 80 };
+
+                // Background
+                ctx.fillStyle = '#1a1a2e';
+                ctx.fillRect(0, 0, w, h);
+
+                const visibleData = chartData.slice(-60);
+                if (visibleData.length === 0) return;
+
+                const allPrices = visibleData.flatMap(d => [d.high, d.low]);
+                const minPrice = Math.min(...allPrices);
+                const maxPrice = Math.max(...allPrices);
+                const priceRange = maxPrice - minPrice || 1;
+
+                const chartW = w - padding.left - padding.right;
+                const chartH = h - padding.top - padding.bottom;
+                const candleW = chartW / visibleData.length;
+
+                const getY = (price) => padding.top + chartH - ((price - minPrice) / priceRange) * chartH;
+
+                // Grid lines
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+                ctx.lineWidth = 1;
+                for (let i = 0; i <= 8; i++) {
+                    const y = padding.top + (chartH / 8) * i;
+                    ctx.beginPath();
+                    ctx.moveTo(padding.left, y);
+                    ctx.lineTo(w - padding.right, y);
+                    ctx.stroke();
+
+                    // Price labels
+                    const price = maxPrice - (priceRange / 8) * i;
+                    ctx.fillStyle = '#555';
+                    ctx.font = '11px Segoe UI';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(formatPrice(price), w - padding.right + 5, y + 4);
+                }
+
+                if (chartType === 'candle') {
+                    // Draw candlesticks
+                    visibleData.forEach((d, i) => {
+                        const x = padding.left + i * candleW + candleW / 2;
+                        const isGreen = d.close >= d.open;
+
+                        // Wick
+                        ctx.strokeStyle = isGreen ? '#00e676' : '#ff1744';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(x, getY(d.high));
+                        ctx.lineTo(x, getY(d.low));
+                        ctx.stroke();
+
+                        // Body
+                        const bodyTop = getY(Math.max(d.open, d.close));
+                        const bodyBottom = getY(Math.min(d.open, d.close));
+                        const bodyH = Math.max(bodyBottom - bodyTop, 1);
+
+                        ctx.fillStyle = isGreen ? '#00e676' : '#ff1744';
+                        ctx.fillRect(x - candleW * 0.35, bodyTop, candleW * 0.7, bodyH);
+                    });
+                } else if (chartType === 'line' || chartType === 'area') {
+                    // Line / Area chart
+                    ctx.beginPath();
+                    ctx.strokeStyle = '#00d2ff';
+                    ctx.lineWidth = 2;
+
+                    visibleData.forEach((d, i) => {
+                        const x = padding.left + i * candleW + candleW / 2;
+                        const y = getY(d.close);
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    });
+                    ctx.stroke();
+
+                    if (chartType === 'area') {
+                        const lastX = padding.left + (visibleData.length - 1) * candleW + candleW / 2;
+                        const firstX = padding.left + candleW / 2;
+                        ctx.lineTo(lastX, h - padding.bottom);
+                        ctx.lineTo(firstX, h - padding.bottom);
+                        ctx.closePath();
+
+                        const gradient = ctx.createLinearGradient(0, padding.top, 0, h - padding.bottom);
+                        gradient.addColorStop(0, 'rgba(0, 210, 255, 0.3)');
+                        gradient.addColorStop(1, 'rgba(0, 210, 255, 0.0)');
+                        ctx.fillStyle = gradient;
+                        ctx.fill();
+                    }
+                }
+
+                // Current price line
+                const lastCandle = visibleData[visibleData.length - 1];
+                const currentY = getY(lastCandle.close);
+
+                ctx.strokeStyle = 'rgba(0, 210, 255, 0.5)';
+                ctx.setLineDash([5, 5]);
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(padding.left, currentY);
+                ctx.lineTo(w - padding.right, currentY);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Price tag
+                const priceTag = document.getElementById('priceTag');
+                priceTag.style.top = currentY + 'px';
+                priceTag.textContent = formatPrice(lastCandle.close);
+
+                // Active trade markers
+                activeTrades.forEach(trade => {
+                    const entryY = getY(trade.entryPrice);
+                    ctx.strokeStyle = trade.direction === 'up' ? 'rgba(0, 230, 118, 0.5)' : 'rgba(255, 23, 68, 0.5)';
+                    ctx.setLineDash([3, 3]);
+                    ctx.beginPath();
+                    ctx.moveTo(padding.left, entryY);
+                    ctx.lineTo(w - padding.right, entryY);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                });
+
+                animationId = requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        // ============ PRICE UPDATES ============
+        function startPriceUpdates() {
+            setInterval(() => {
+                assets.forEach(asset => {
+                    const volatility = asset.price * 0.001;
+                    const change = (Math.random() - 0.48) * volatility;
+                    asset.price += change;
+                    asset.change = parseFloat(((change / asset.price) * 100).toFixed(2));
+                });
+
+                // Update chart
+                const lastCandle = chartData[chartData.length - 1];
+                const volatility = selectedAsset.price * 0.001;
+                const newClose = lastCandle.close + (Math.random() - 0.48) * volatility;
+
+                const newCandle = {
+                    open: lastCandle.close,
+                    close: newClose,
+                    high: Math.max(lastCandle.close, newClose) + Math.random() * volatility * 0.3,
+                    low: Math.min(lastCandle.close, newClose) - Math.random() * volatility * 0.3,
+                    time: Date.now()
+                };
+
+                chartData.push(newCandle);
+                if (chartData.length > 200) chartData.shift();
+
+                selectedAsset.price = newClose;
+                document.getElementById('selectedAssetPrice').textContent = `$${formatPrice(newClose)}`;
+                document.getElementById('selectedAssetPrice').style.color = 
+                    newClose >= lastCandle.close ? '#00e676' : '#ff1744';
+
+                renderAssetList(assets);
+                updateActiveTrades();
+            }, 1000);
+        }
+
+        // ============ TRADING ============
+        function placeTrade(direction) {
+            const amount = parseFloat(document.getElementById('tradeAmount').value);
+            if (amount <= 0 || amount > balance) {
+                showNotification('❌', 'Insufficient balance!', 'lose');
+                return;
+            }
+
+            balance -= amount;
+            updateBalance();
+
+            const trade = {
+                id: Date.now(),
+                asset: selectedAsset.name,
+                direction: direction,
+                amount: amount,
+                entryPrice: selectedAsset.price,
+                payout: selectedAsset.payout,
+                expiryTime: expiryTime,
+                timeLeft: expiryTime,
+                startTime: Date.now()
+            };
+
+            activeTrades.push(trade);
+            showNotification('📊', `Trade opened: ${direction.toUpperCase()} $${amount} on ${selectedAsset.name}`, 'info');
+            updateTradesPanel();
+
+            // Start countdown
+            const timer = setInterval(() => {
+                trade.timeLeft--;
+                updateTradesPanel();
+
+                if (trade.timeLeft <= 0) {
+                    clearInterval(timer);
+                    resolveTrade(trade);
+                }
+            }, 1000);
+        }
+
+        function resolveTrade(trade) {
+            const currentPrice = selectedAsset.price;
+            let won = false;
+
+            if (trade.direction === 'up' && currentPrice > trade.entryPrice) won = true;
+            if (trade.direction === 'down' && currentPrice < trade.entryPrice) won = true;
+
+            if (won) {
+                const profit = trade.amount * (trade.payout / 100);
+                balance += trade.amount + profit;
+                showNotification('🎉', `Trade Won! +$${profit.toFixed(2)}`, 'win');
+            } else {
+                showNotification('😔', `Trade Lost! -$${trade.amount.toFixed(2)}`, 'lose');
+            }
+
+            activeTrades = activeTrades.filter(t => t.id !== trade.id);
+            updateBalance();
+            updateTradesPanel();
+        }
+
+        function updateActiveTrades() {
+            activeTrades.forEach(trade => {
+                const asset = assets.find(a => a.name === trade.asset);
+                if (asset) {
+                    trade.currentPrice = asset.price;
+                }
+            });
+        }
+
+        function updateTradesPanel() {
+            const panel = document.getElementById('activeTrades');
+            const list = document.getElementById('tradesList');
+            const count = document.getElementById('tradesCount');
+
+            if (activeTrades.length === 0) {
+                panel.style.display = 'none';
+                return;
+            }
+
+            panel.style.display = 'block';
+            count.textContent = activeTrades.length;
+
+            list.innerHTML = activeTrades.map(trade => {
+                const pnl = trade.direction === 'up' 
+                    ? (selectedAsset.price - trade.entryPrice) 
+                    : (trade.entryPrice - selectedAsset.price);
+                const isPositive = pnl >= 0;
+                const minutes = Math.floor(trade.timeLeft / 60);
+                const seconds = trade.timeLeft % 60;
+
+                return `
+                    <div class="trade-item">
+                        <div class="trade-item-left">
+                            <div class="trade-direction ${trade.direction}">
+                                ${trade.direction === 'up' ? '▲' : '▼'}
+                            </div>
+                            <div>
+                                <div class="trade-asset-name">${trade.asset} - $${trade.amount}</div>
+                                <div class="trade-time-left">⏱️ ${minutes}:${seconds.toString().padStart(2, '0')}</div>
+                            </div>
+                        </div>
+                        <div class="trade-pnl ${isPositive ? 'positive' : 'negative'}">
+                            ${isPositive ? '+' : ''}${(pnl > 0 ? '+' : '') + '$' + Math.abs(pnl * trade.amount * 0.01).toFixed(2)}
                         </div>
                     </div>
-                    <canvas id="priceChart" width="800" height="400"></canvas>
-                    <div class="chart-overlay" id="chartOverlay"></div>
-                </div>
+                `;
+            }).join('');
+        }
 
-                <!-- Trading Controls -->
-                <div class="trading-controls">
-                    <div class="control-group">
-                        <label for="assetSelect">Asset</label>
-                        <select id="assetSelect" class="input-field">
-                            <option value="EUR/USD" data-base="1.0845">EUR/USD</option>
-                            <option value="GBP/USD" data-base="1.2650">GBP/USD</option>
-                            <option value="BTC/USD" data-base="43250.00">BTC/USD</option>
-                            <option value="USD/JPY" data-base="149.20">USD/JPY</option>
-                        </select>
-                    </div>
+        // ============ UI CONTROLS ============
+        function adjustAmount(delta) {
+            const input = document.getElementById('tradeAmount');
+            let val = parseFloat(input.value) + delta;
+            if (val < 1) val = 1;
+            input.value = val;
+            tradeAmount = val;
+            updateProfit();
+        }
 
-                    <div class="control-group">
-                        <label>Timeframe</label>
-                        <div class="timeframe-buttons">
-                            <button class="tf-select active" data-time="30">30s</button>
-                            <button class="tf-select" data-time="60">60s</button>
-                            <button class="tf-select" data-time="300">5m</button>
-                        </div>
-                    </div>
+        function setAmount(val) {
+            document.getElementById('tradeAmount').value = val;
+            tradeAmount = val;
+            updateProfit();
+        }
 
-                    <div class="control-group">
-                        <label for="tradeAmount">Trade Amount ($)</label>
-                        <input type="number" id="tradeAmount" class="input-field" min="10" max="1000" value="100" step="10">
-                    </div>
+        function setExpiry(seconds, btn) {
+            expiryTime = seconds;
+            document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
 
-                    <div class="trade-buttons">
-                        <button class="trade-btn up" id="upBtn">
-                            <span class="btn-label">UP</span>
-                            <span class="btn-sublabel">Call</span>
-                        </button>
-                        <button class="trade-btn down" id="downBtn">
-                            <span class="btn-label">DOWN</span>
-                            <span class="btn-sublabel">Put</span>
-                        </button>
-                    </div>
+        function setTimeframe(tf, btn) {
+            document.querySelectorAll('.timeframe-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
 
-                    <div class="payout-info">
-                        <span>Payout: <strong id="payoutDisplay">$180</strong> (80%)</span>
-                    </div>
-                </div>
-            </div>
+        function setChartType(type, btn) {
+            chartType = type;
+            document.querySelectorAll('.chart-type-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
 
-            <!-- Open Trades Table -->
-            <div class="trades-section">
-                <h3>Open Trades</h3>
-                <div class="table-container">
-                    <table class="trades-table" id="openTradesTable">
-                        <thead>
-                            <tr>
-                                <th>Asset</th>
-                                <th>Direction</th>
-                                <th>Amount</th>
-                                <th>Entry Price</th>
-                                <th>Current</th>
-                                <th>Time Left</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="openTradesBody">
-                            <tr class="empty-row">
-                                <td colspan="7">No open trades. Start trading now!</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        function switchAccount(type, btn) {
+            document.querySelectorAll('.account-type button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            if (type === 'demo') {
+                balance = 10000;
+            }
+            updateBalance();
+        }
 
-            <!-- Trade History Table -->
-            <div class="trades-section">
-                <h3>Trade History</h3>
-                <div class="table-container">
-                    <table class="trades-table" id="historyTable">
-                        <thead>
-                            <tr>
-                                <th>Time</th>
-                                <th>Asset</th>
-                                <th>Direction</th>
-                                <th>Amount</th>
-                                <th>Entry</th>
-                                <th>Exit</th>
-                                <th>Result</th>
-                                <th>P/L</th>
-                            </tr>
-                        </thead>
-                        <tbody id="historyBody">
-                            <tr class="empty-row">
-                                <td colspan="8">No trade history yet.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </section>
+        function updateBalance() {
+            document.getElementById('balanceDisplay').textContent = balance.toLocaleString('en-US', {
+                minimumFractionDigits: 2, maximumFractionDigits: 2
+            });
+        }
 
-    <!-- FAQs Section -->
-    <section id="faqs" class="section">
-        <div class="container">
-            <h2 class="section-title">Frequently Asked Questions</h2>
-            <div class="faq-list">
-                <div class="faq-item">
-                    <button class="faq-question">
-                        Is this real money?
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>No, Binary Pro is a demo interface for practice only. All balances and trades are simulated using virtual currency.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question">
-                        Can I withdraw money?
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>No, this is only virtual balance. No real deposits or withdrawals are possible on this demo platform.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question">
-                        How accurate is the price data?
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>The prices are simulated for demonstration purposes. They move randomly within realistic ranges but do not reflect real market data.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question">
-                        Is there a time limit?
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>No, you can practice as long as you like. Reset your balance anytime by refreshing the page.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+        function updateProfit() {
+            const amount = parseFloat(document.getElementById('tradeAmount').value) || 0;
+            const profit = amount * (selectedAsset.payout / 100);
+            document.getElementById('profitValue').textContent = `+$${profit.toFixed(2)}`;
+        }
 
-    <!-- Contact Section -->
-    <section id="contact" class="section">
-        <div class="container">
-            <h2 class="section-title">Contact Us</h2>
-            <div class="contact-container">
-                <form class="contact-form" id="contactForm">
-                    <div class="form-group">
-                        <label for="contactName">Name</label>
-                        <input type="text" id="contactName" class="input-field" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="contactEmail">Email</label>
-                        <input type="email" id="contactEmail" class="input-field" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="contactMessage">Message</label>
-                        <textarea id="contactMessage" class="input-field" rows="5" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Send Message</button>
-                </form>
-            </div>
-        </div>
-    </section>
+        document.getElementById('tradeAmount').addEventListener('input', updateProfit);
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p class="footer-text">Binary Pro – Demo binary trading interface.</p>
-            <p class="risk-warning">Trading binary options involves high risk. This website is a demo/educational interface only, not a real trading platform.</p>
-            <p class="copyright">&copy; 2026 Binary Pro. All rights reserved.</p>
-        </div>
-    </footer>
+        // ============ NOTIFICATIONS ============
+        function showNotification(icon, text, type) {
+            const notif = document.getElementById('notification');
+            document.getElementById('notifIcon').textContent = icon;
+            document.getElementById('notifText').textContent = text;
+            notif.className = `notification ${type} show`;
 
-    <script src="script.js"></script>
+            setTimeout(() => {
+                notif.classList.remove('show');
+            }, 3000);
+        }
+
+        // ============ MODAL ============
+        function showModal(type) {
+            document.getElementById('modalOverlay').classList.add('active');
+            if (type === 'deposit') {
+                document.getElementById('modalTitle').textContent = '💰 Deposit Funds';
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        function processDeposit() {
+            const amount = parseFloat(document.getElementById('depositAmount').value);
+            if (amount > 0) {
+                balance += amount;
+                updateBalance();
+                closeModal();
+                showNotification('✅', `Successfully deposited $${amount.toFixed(2)}`, 'win');
+            }
+        }
+
+        // ============ HELPER ============
+        function formatPrice(price) {
+            if (price >= 1000) return price.toFixed(2);
+            if (price >= 1) return price.toFixed(4);
+            return price.toFixed(6);
+        }
+
+        // ============ RESIZE ============
+        window.addEventListener('resize', () => {
+            cancelAnimationFrame(animationId);
+            startChart();
+        });
+
+        // ============ START ============
+        init();
+    </script>
 </body>
 </html>
