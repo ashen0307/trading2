@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binary Pro - Demo Trading Platform</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">Binary Pro</div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+                <li><a href="#demo-trading" class="nav-link">Demo Trading</a></li>
+                <li><a href="#faqs" class="nav-link">FAQs</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Binary Pro</h1>
+            <p class="subtitle">Simple demo platform to practice binary trading decisions.</p>
+            <div class="hero-buttons">
+                <a href="#demo-trading" class="btn btn-primary">Start Demo Trading</a>
+                <a href="#how-it-works" class="btn btn-secondary">Learn More</a>
+            </div>
+        </div>
+        <div class="hero-bg"></div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="section">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-icon">📊</div>
+                    <h3>Choose an Asset</h3>
+                    <p>Select from popular currency pairs like EUR/USD, GBP/USD, or BTC/USD.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">📈</div>
+                    <h3>Choose Direction</h3>
+                    <p>Predict whether the price will go UP (Call) or DOWN (Put).</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">⏱️</div>
+                    <h3>Set Amount & Time</h3>
+                    <p>Choose your trade amount and expiration time (30s, 60s, or 5m).</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">💰</div>
+                    <h3>See Results</h3>
+                    <p>Watch the outcome at expiry. Win up to 80% profit or learn from losses.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Trading Section -->
+    <section id="demo-trading" class="section trading-section">
+        <div class="container">
+            <h2 class="section-title">Demo Trading</h2>
+            
+            <!-- Stats Bar -->
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-label">Balance</span>
+                    <span class="stat-value" id="balanceDisplay">$10,000.00</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Open Trades</span>
+                    <span class="stat-value" id="openTradesCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Won</span>
+                    <span class="stat-value win" id="wonCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Lost</span>
+                    <span class="stat-value loss" id="lostCount">0</span>
+                </div>
+            </div>
+
+            <!-- Trading Interface -->
+            <div class="trading-interface">
+                <!-- Chart Area -->
+                <div class="chart-area">
+                    <div class="chart-header">
+                        <div class="asset-info">
+                            <h3 id="currentAsset">EUR/USD</h3>
+                            <span class="price" id="currentPrice">1.0845</span>
+                            <span class="price-change" id="priceChange">+0.00%</span>
+                        </div>
+                        <div class="timeframe-selector">
+                            <button class="tf-btn active" data-tf="30s">30s</button>
+                            <button class="tf-btn" data-tf="60s">60s</button>
+                            <button class="tf-btn" data-tf="5m">5m</button>
+                        </div>
+                    </div>
+                    <canvas id="priceChart" width="800" height="400"></canvas>
+                    <div class="chart-overlay" id="chartOverlay"></div>
+                </div>
+
+                <!-- Trading Controls -->
+                <div class="trading-controls">
+                    <div class="control-group">
+                        <label for="assetSelect">Asset</label>
+                        <select id="assetSelect" class="input-field">
+                            <option value="EUR/USD" data-base="1.0845">EUR/USD</option>
+                            <option value="GBP/USD" data-base="1.2650">GBP/USD</option>
+                            <option value="BTC/USD" data-base="43250.00">BTC/USD</option>
+                            <option value="USD/JPY" data-base="149.20">USD/JPY</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Timeframe</label>
+                        <div class="timeframe-buttons">
+                            <button class="tf-select active" data-time="30">30s</button>
+                            <button class="tf-select" data-time="60">60s</button>
+                            <button class="tf-select" data-time="300">5m</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="tradeAmount">Trade Amount ($)</label>
+                        <input type="number" id="tradeAmount" class="input-field" min="10" max="1000" value="100" step="10">
+                    </div>
+
+                    <div class="trade-buttons">
+                        <button class="trade-btn up" id="upBtn">
+                            <span class="btn-label">UP</span>
+                            <span class="btn-sublabel">Call</span>
+                        </button>
+                        <button class="trade-btn down" id="downBtn">
+                            <span class="btn-label">DOWN</span>
+                            <span class="btn-sublabel">Put</span>
+                        </button>
+                    </div>
+
+                    <div class="payout-info">
+                        <span>Payout: <strong id="payoutDisplay">$180</strong> (80%)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Open Trades Table -->
+            <div class="trades-section">
+                <h3>Open Trades</h3>
+                <div class="table-container">
+                    <table class="trades-table" id="openTradesTable">
+                        <thead>
+                            <tr>
+                                <th>Asset</th>
+                                <th>Direction</th>
+                                <th>Amount</th>
+                                <th>Entry Price</th>
+                                <th>Current</th>
+                                <th>Time Left</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="openTradesBody">
+                            <tr class="empty-row">
+                                <td colspan="7">No open trades. Start trading now!</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Trade History Table -->
+            <div class="trades-section">
+                <h3>Trade History</h3>
+                <div class="table-container">
+                    <table class="trades-table" id="historyTable">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Asset</th>
+                                <th>Direction</th>
+                                <th>Amount</th>
+                                <th>Entry</th>
+                                <th>Exit</th>
+                                <th>Result</th>
+                                <th>P/L</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyBody">
+                            <tr class="empty-row">
+                                <td colspan="8">No trade history yet.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQs Section -->
+    <section id="faqs" class="section">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Is this real money?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>No, Binary Pro is a demo interface for practice only. All balances and trades are simulated using virtual currency.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Can I withdraw money?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>No, this is only virtual balance. No real deposits or withdrawals are possible on this demo platform.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        How accurate is the price data?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>The prices are simulated for demonstration purposes. They move randomly within realistic ranges but do not reflect real market data.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Is there a time limit?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>No, you can practice as long as you like. Reset your balance anytime by refreshing the page.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <div class="contact-container">
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label for="contactName">Name</label>
+                        <input type="text" id="contactName" class="input-field" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactEmail">Email</label>
+                        <input type="email" id="contactEmail" class="input-field" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactMessage">Message</label>
+                        <textarea id="contactMessage" class="input-field" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">Binary Pro – Demo binary trading interface.</p>
+            <p class="risk-warning">Trading binary options involves high risk. This website is a demo/educational interface only, not a real trading platform.</p>
+            <p class="copyright">&copy; 2026 Binary Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
